@@ -17,7 +17,7 @@ extern union {          /* this definition must duplicate the %union in c.y */
 extern FILE *yycodeout; /* declared by rbison in y.tab.c */
 
 /*-------------------------------------------------------*/
-}
+%}
 
 let    [_a-zA-Z]          /* letter */
 alnum  [_a_zA-Z0-9]       /* alphanumeric character */

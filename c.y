@@ -375,9 +375,9 @@ decl
   ;
 
 ext_def : opt_specifiers ext_decl_list  {
-                                          add_spec_to_decl( $1, $2 );
+                                          add_spec_to_decl($1, $2);
                                           if (!$1->tdef) {
-                                            discard_link_chain( $1 );
+                                            discard_link_chain($1);
                                           } 
                                           add_symbols_to_table($2 = reverse_links($2));
                                           figure_osclass($2);
@@ -409,7 +409,7 @@ PRIVATE void init_output_streams(char **p_code, char **p_data, char **p_bss)
 
   if (!(*p_code = mktemp("ccXXXXXX")) || !(*p_data = mktemp("cdXXXXXX")) || !(*p_bss  = mktemp("cbXXXXXX"))) {
     yyerror("can't create temporary-file names");
-    exit( 1 );
+    exit(1);
   }
 
   if (!(yycodeout=fopen(*p_code, "w")) || !(yydataout=fopen(*p_data, "w")) || !(yybssout =fopen(*p_bss, "w"))) {
@@ -435,7 +435,7 @@ int struct_cmp (structdef *s1, structdef *s2) { return strcmp(s1->tag, s2->tag);
 unsigned int sym_hash     (symbol *s1)    { return hash_pjw(s1->name); }
 unsigned int struct_hash  (structdef *s1) { return hash_pjw(s1->tag); }
 
-PUBLIC  void yy_init_occs(void *val )
+void yy_init_occs(void *val )
 {     
   Osig = signal(SIGINT, SIG_IGN);
   init_output_streams(&Code, &Data, &Bss);
@@ -460,7 +460,7 @@ PRIVATE void clean_up()
   fclose(yycodeout);
   fclose(yydataout);
   fclose(yybssout);
-  unlink(OFILE_NAME);     /* delete old output file (ignore EEXIST) */
+  remove(OFILE_NAME);     /* delete old output file (ignore EEXIST) */
 
   if (rename(Data, OFILE_NAME )) {
     yyerror("can't rename temporary (%s) to %s\n", Data, OFILE_NAME );
@@ -471,3 +471,10 @@ PRIVATE void clean_up()
   }
 }
 
+int main()
+{
+  ii_advance();
+  ii_mark_start(); // skipping leading newline 
+  yyparse();
+  return 0; 
+}
